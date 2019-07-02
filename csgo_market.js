@@ -8,7 +8,6 @@
 // @icon         https://store.steampowered.com/favicon.ico
 // @grant        GM_xmlhttpRequest
 // @connect      api.csgofloat.com
-// @updateURL    https://coding.net/u/sffxzzp/p/SteamMarketTools/git/raw/master/CSGO_Market_Tool.user.js
 // ==/UserScript==
 
 (function() {
@@ -141,7 +140,9 @@
             oriButtonDiv.insertBefore(newButton, oriButton);
         };
         csgomt.prototype.addBanner = function () {
-            let listBanner = document.getElementsByClassName('market_listing_table_header')[0];
+            let listElement = document.getElementsByClassName('market_listing_table_header');
+            console.log(listElement.length);
+            let listBanner = listElement[listElement.length-1];
             let nameBanner = listBanner.children[2];
             let childBanner = util.createElement({node: "span", content:{style: "padding-left: 4vw;"}});
             nameBanner.appendChild(childBanner);
@@ -185,7 +186,9 @@
         };
         csgomt.prototype.load = function () {
             var _this = this;
-            let isHandled = document.getElementsByClassName("market_listing_table_header")[0].children.length;
+            let listElement = document.getElementsByClassName('market_listing_table_header');
+            console.log(listElement.length);
+            let isHandled = listElement[listElement.length-1].children.length;
             if (isHandled > 3) {return false;}
             this.addBanner();
             this.addStyle();
@@ -216,6 +219,11 @@
             }
             let itemList = document.getElementsByClassName('market_recent_listing_row');
             for (let i=0;i<itemList.length;i++) {
+                let listingClass = itemList[i].id.substring(0,7);
+                if(listingClass!="listing"){
+                    console.log(listingClass);
+                continue;
+                }
                 let listingid = itemList[i].id.substring(8);
                 let assetid = itemListInfo[listingid].asset.id;
                 let floatButton;

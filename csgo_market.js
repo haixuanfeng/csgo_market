@@ -8,6 +8,7 @@
 // @icon         https://store.steampowered.com/favicon.ico
 // @grant        GM_xmlhttpRequest
 // @connect      api.csgofloat.com
+// @updateURL    https://coding.net/u/sffxzzp/p/SteamMarketTools/git/raw/master/CSGO_Market_Tool.user.js
 // ==/UserScript==
 
 (function() {
@@ -86,7 +87,7 @@
             let retResult = {"floatvalue": result.iteminfo.floatvalue.toFixed(14)};
             let stickerConts = result.iteminfo.stickers;
             if (stickerConts.length > 0) {
-                let stickerText = "Ó¡»¨£º";
+                let stickerText = "å°èŠ±ï¼š";
                 for (let i=0;i<stickerConts.length;i++) {
                     if (stickerConts[i].wear==null) {stickerText += "100% ";}
                     else {let tmpNum = (1-stickerConts[i].wear)*100;stickerText += tmpNum.toFixed(2)+"% ";}
@@ -94,7 +95,7 @@
                 retResult.stickerText = stickerText;
             }
             if (result.iteminfo.imageurl.indexOf('phase')>=0) {
-                let dopplerText = "¶àÆÕÀÕ£º";
+                let dopplerText = "å¤šæ™®å‹’ï¼š";
                 let dopplerRe = /phase\d/gi;
                 dopplerText += result.iteminfo.imageurl.match(dopplerRe)[0];
                 retResult.dopplerText = dopplerText;
@@ -125,30 +126,28 @@
                     localStorage.setItem(node.id, JSON.stringify(finalResult));
                 }
                 else {
-                    node.innerHTML = "<span>²éÑ¯Ê§°Ü</span>";
+                    node.innerHTML = "<span>æŸ¥è¯¢å¤±è´¥</span>";
                 }
             });
         };
         csgomt.prototype.addButton = function () {
             let oriButtonDiv = document.getElementById('market_buyorder_info').children[0];
             let oriButton = document.getElementById('market_commodity_buyrequests');
-            let newButton = util.createElement({node: "div", content: {style: "float: right; padding-right: 10px;"}, html: "<a class=\"btn_blue_white_innerfade btn_medium market_noncommodity_buyorder_button\" href=\"javascript:void(0)\"><span>Çå³ı±¾µØ»º´æ</span></a>"});
+            let newButton = util.createElement({node: "div", content: {style: "float: right; padding-right: 10px;"}, html: "<a class=\"btn_blue_white_innerfade btn_medium market_noncommodity_buyorder_button\" href=\"javascript:void(0)\"><span>æ¸…é™¤æœ¬åœ°ç¼“å­˜</span></a>"});
             newButton.onclick = function () {
                 localStorage.clear();
-                alert("ÇåÀíÍê±Ï£¡");
+                alert("æ¸…ç†å®Œæ¯•ï¼");
             };
             oriButtonDiv.insertBefore(newButton, oriButton);
         };
         csgomt.prototype.addBanner = function () {
-            let listElement = document.getElementsByClassName('market_listing_table_header');
-            console.log(listElement.length);
-            let listBanner = listElement[listElement.length-1];
+            let listBanner = document.getElementsByClassName('market_listing_table_header')[0];
             let nameBanner = listBanner.children[2];
             let childBanner = util.createElement({node: "span", content:{style: "padding-left: 4vw;"}});
             nameBanner.appendChild(childBanner);
-            childBanner = util.createElement({node: "span", content: {style: "width: 20%;", class: "market_listing_right_cell market_listing_stickers_buttons market_listing_sticker"}, html: "Ó¡»¨"});
+            childBanner = util.createElement({node: "span", content: {style: "width: 20%;", class: "market_listing_right_cell market_listing_stickers_buttons market_listing_sticker"}, html: "å°èŠ±"});
             listBanner.insertBefore(childBanner, nameBanner);
-            childBanner = util.createElement({node: "span", content: {style: "width: 15%;", class: "market_listing_right_cell market_listing_action_buttons market_listing_wear"}, html: "Ä¥ËğÖµ"});
+            childBanner = util.createElement({node: "span", content: {style: "width: 15%;", class: "market_listing_right_cell market_listing_action_buttons market_listing_wear"}, html: "ç£¨æŸå€¼"});
             listBanner.insertBefore(childBanner, nameBanner);
         };
         csgomt.prototype.addStyle = function () {
@@ -168,9 +167,9 @@
             };
             newPageCtl.appendChild(newPageGo);
             oriPageDiv.insertBefore(newPageCtl, oriPageCtl);
-            let newPageSizeCtl = util.createElement({node: "div", content: {class: "market_pagesize_options", style: "margin: 0 0 2em 0; font-size: 12px;"}, html: "Ã¿Ò³ÏÔÊ¾Êı£º		"});
+            let newPageSizeCtl = util.createElement({node: "div", content: {class: "market_pagesize_options", style: "margin: 0 0 2em 0; font-size: 12px;"}, html: "æ¯é¡µæ˜¾ç¤ºæ•°ï¼š		"});
             let newPageSizeInput = util.createElement({node: "input", content: {class: "filter_search_box market_search_filter_search_box", style: "width: 30px;", type: "text", autocomplete: "off"}});
-            let newPageSizeGo = util.createElement({node: "span", content: {class: "btn_darkblue_white_innerfade btn_small"}, html: "&nbsp;ĞŞ¸Ä&nbsp;"});
+            let newPageSizeGo = util.createElement({node: "span", content: {class: "btn_darkblue_white_innerfade btn_small"}, html: "&nbsp;ä¿®æ”¹&nbsp;"});
             newPageSizeGo.onclick = function () {
                 if (g_oSearchResults.m_cPageSize != newPageSizeInput.value && newPageSizeInput.value < 101) {
                     let oldPageSize = g_oSearchResults.m_cPageSize;
@@ -186,9 +185,7 @@
         };
         csgomt.prototype.load = function () {
             var _this = this;
-            let listElement = document.getElementsByClassName('market_listing_table_header');
-            console.log(listElement.length);
-            let isHandled = listElement[listElement.length-1].children.length;
+            let isHandled = document.getElementsByClassName("market_listing_table_header")[0].children.length;
             if (isHandled > 3) {return false;}
             this.addBanner();
             this.addStyle();
@@ -219,11 +216,6 @@
             }
             let itemList = document.getElementsByClassName('market_recent_listing_row');
             for (let i=0;i<itemList.length;i++) {
-                let listingClass = itemList[i].id.substring(0,7);
-                if(listingClass!="listing"){
-                    console.log(listingClass);
-                continue;
-                }
                 let listingid = itemList[i].id.substring(8);
                 let assetid = itemListInfo[listingid].asset.id;
                 let floatButton;
@@ -246,10 +238,10 @@
                     }
                 }
                 else {
-                    floatButton = util.createElement({node: "span", content: {style: "width: 15%;", class: "market_listing_right_cell market_listing_action_buttons market_listing_wear"}, html: '<div class="market_listing_right_cell market_listing_action_buttons" style="float:left;"><a link='+itemInfo[assetid].link+' id='+listingid+' class="floatvalue_button btn_darkblue_white_innerfade btn_small"><span>µã»÷²éÑ¯Ä¥Ëğ</span></a></div>'});
+                    floatButton = util.createElement({node: "span", content: {style: "width: 15%;", class: "market_listing_right_cell market_listing_action_buttons market_listing_wear"}, html: '<div class="market_listing_right_cell market_listing_action_buttons" style="float:left;"><a link='+itemInfo[assetid].link+' id='+listingid+' class="floatvalue_button btn_darkblue_white_innerfade btn_small"><span>ç‚¹å‡»æŸ¥è¯¢ç£¨æŸ</span></a></div>'});
                     floatButton.onclick = function () {
                         let clickedButton = this.children[0].children[0];
-                        util.setElement({node: clickedButton, html: "<span>Ä¥Ëğ²éÑ¯ÖĞ¡­</span>"});
+                        util.setElement({node: clickedButton, html: "<span>ç£¨æŸæŸ¥è¯¢ä¸­â€¦</span>"});
                         _this.getFloatValue(clickedButton);
                     };
                 }
